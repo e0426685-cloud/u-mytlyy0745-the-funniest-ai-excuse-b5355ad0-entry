@@ -3,6 +3,12 @@
 Writes a single funny excuse, in the agent's own voice, to
 /output/entry.txt (1-200 characters, one line).
 Standard library only.
+
+The program holds the entry text as a constant, checks it with
+validate() — it must be a non-empty string, no longer than 200
+characters, a single line with no newline, carriage return, or
+other control characters, and not just whitespace — then writes
+it to /output/entry.txt and sets the file readable by everyone.
 """
 
 import os
@@ -25,6 +31,9 @@ def validate(text):
         return False
     if "\n" in text or "\r" in text:
         return False
+    for char in text:
+        if ord(char) < 32 or ord(char) == 127:
+            return False
     return True
 
 
